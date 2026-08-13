@@ -32,11 +32,14 @@ Ver o processo que esse sistema automatiza em [[../processo-criadores|processo-c
 2. Em ambos, cole a URL do passo anterior na constante `SHEETS_URL` (topo do `<script>`).
 3. Em `painel-criadores.html`, troque a constante `SENHA` por uma senha real sua — a que está no arquivo é só placeholder.
 
-### 4. Publicar
-- **Formulário** (público): precisa de uma URL real pra rodar o Pixel e receber criadores. Mais simples: subir num site Netlify novo (mesmo esquema dos outros sites da Aimê) ou adicionar como uma página nova dentro de um repo já existente.
-- **Painel** (uso só seu): pode ficar no mesmo site, numa URL que você não divulga, ou até aberto localmente no navegador — funciona igual, só perde o acesso de qualquer lugar.
+### 4. Publicar — ✅ feito em 13/08/2026
+- Repositório: [github.com/pousadaaime/aime-criadores](https://github.com/pousadaaime/aime-criadores) (público — precisou ser público porque GitHub Pages não funciona em repo privado no plano atual da org)
+- Hospedagem: GitHub Pages, branch `main`, raiz `/`
+- **Formulário (público):** https://pousadaaime.github.io/aime-criadores/
+- **Painel (uso interno):** https://pousadaaime.github.io/aime-criadores/painel-criadores.html
+- `SHEETS_URL` já preenchido nos dois HTMLs com a URL do Apps Script implantado.
 
-Me chama quando estiver pronta pra publicar que eu ajudo a subir — não fiz isso ainda porque falta a URL do Apps Script (passo 2), que só você consegue gerar (exige login Google).
+⚠️ **Pendente:** trocar a constante `SENHA` em `painel-criadores.html` (ainda está no placeholder do template) — como o repo é público, a senha atual é visível a qualquer um que abrir o código-fonte.
 
 ### 5. Testar antes de divulgar
 1. Preencha o formulário publicado uma vez com dado de teste.
