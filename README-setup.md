@@ -39,7 +39,7 @@ Ver o processo que esse sistema automatiza em [[../processo-criadores|processo-c
 - **Painel (uso interno):** https://pousadaaime.github.io/aime-criadores/painel-criadores.html
 - `SHEETS_URL` já preenchido nos dois HTMLs com a URL do Apps Script implantado.
 
-⚠️ **Pendente:** trocar a constante `SENHA` em `painel-criadores.html` (ainda está no placeholder do template) — como o repo é público, a senha atual é visível a qualquer um que abrir o código-fonte.
+✅ Senha do painel já trocada do placeholder — lembre que, como o repo é público, ela fica visível pra quem olhar o código-fonte (mesma fragilidade do `crm-aime.html`). Não reuse essa senha em nada mais sensível.
 
 ### 5. Testar antes de divulgar
 1. Preencha o formulário publicado uma vez com dado de teste.
