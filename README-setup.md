@@ -49,7 +49,46 @@ Ver o processo que esse sistema automatiza em [[../processo-criadores|processo-c
 
 ---
 
+## 6. Automação de WhatsApp (MVP — só abertura 2a/2b)
+
+> Escopo do MVP: responde o primeiro contato, pergunta se tem interesse, manda o link do formulário se confirmar. O resto (termo, dados de check-in, confirmação, cobrança) continua manual — decisão consciente pra testar a base antes de automatizar a parte que mexe com CPF/reserva real.
+
+### 6.1 Preparar a planilha
+1. Na mesma Google Sheet, crie uma **segunda aba** chamada **"Conversas"**.
+2. Na célula A1 dessa aba, cole: `telefone	etapa	ultima_mensagem	atualizado_em`
+
+### 6.2 Criar o app no Meta for Developers
+1. Acesse [developers.facebook.com/apps](https://developers.facebook.com/apps) → **Criar app** → tipo **Empresa**.
+2. Dentro do app, adicione o produto **WhatsApp**.
+3. Em "Configuração da API", associe o **número do chip novo da agência** (o fluxo pede o número + código de verificação por SMS/ligação).
+4. Anote 2 valores que vão aparecer: **Phone number ID** e o **token de acesso temporário** (depois trocamos por um permanente via System User, igual já fizemos pro Instagram).
+
+### 6.3 Configurar o Script Properties (Apps Script)
+Voltando no mesmo projeto do Apps Script (Configurações do projeto → Propriedades do script), adicione:
+- `WHATSAPP_TOKEN` — o token de acesso do passo 6.2
+- `WHATSAPP_PHONE_NUMBER_ID` — o Phone number ID do passo 6.2
+- `WHATSAPP_VERIFY_TOKEN` — invente uma senha qualquer (só precisa bater com o próximo passo)
+- `WHATSAPP_NOTIFICAR` — seu número pessoal (só dígitos, com DDI 55) — recebe aviso quando uma mensagem foge do roteiro
+- `GEMINI_API_KEY` — opcional, grátis em [aistudio.google.com/apikey](https://aistudio.google.com/apikey) — sem essa chave, o bot ainda funciona pro roteiro fixo (2a/2b), só não tenta responder pergunta livre
+
+Depois de adicionar, **Implantar → Gerenciar implantações → editar (lápis) → Nova versão → Implantar** (reusa a mesma URL — não cria implantação nova).
+
+### 6.4 Configurar o Webhook no Meta for Developers
+1. No mesmo app, em WhatsApp → Configuração → **Webhook**.
+2. URL de callback: a mesma URL `/exec` do Apps Script (a que já está em `SHEETS_URL`).
+3. Verify token: o mesmo valor que você colocou em `WHATSAPP_VERIFY_TOKEN`.
+4. Clique em Verificar — se dar certo, marca os campos pra inscrever: escolha **messages**.
+
+### 6.5 Testar
+1. Mande uma mensagem qualquer pro número novo, de outro celular.
+2. Deve chegar a resposta de abertura (script 1b/2a) automaticamente.
+3. Responda "sim" — deve vir o link do formulário (script 2b).
+4. Na planilha, aba "Conversas", confira se o número e a etapa foram registrados.
+5. Se algo não responder, no Apps Script → **Execuções** (ícone de relógio) → veja o log de erro.
+
+---
+
 ## O que ficou de propósito fora do escopo (por enquanto)
 
-- **Automação de WhatsApp** (IA respondendo o criador automaticamente) — é uma peça separada, ver conversa sobre isso. Este sistema aqui é só formulário + painel + Sheets + Meta.
-- **Hospedagem/deploy real** — os arquivos estão prontos, mas publicá-los é uma ação que temos que confirmar juntas (é conteúdo público, com PII de verdade depois que criadores reais preencherem).
+- **Resto do fluxo automatizado** (termo, dados de check-in, confirmação, cobrança) — só a abertura está automatizada. Ver Etapa 5 do [[../processo-criadores|processo]] pra essas partes, que continuam manuais.
+- **IA "aprendendo sozinha"** — o fallback de IA (Gemini) responde com base no resumo fixo `BASE_CONHECIMENTO` dentro do `codigo-apps-script.gs`, que precisa ser atualizado manualmente quando o processo mudar. Não lê o Obsidian em tempo real (Apps Script roda na nuvem do Google, sem acesso ao computador local).
